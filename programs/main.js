@@ -1,37 +1,45 @@
-let wordToFind = getQuestions();
-let wordsToAnswer = getAnswers();
+// Henter de to lister over predefinerede svar og spørgsmål fra q_a_Database.js
+var wordToFind = getQuestions();
+var wordsToAnswer = getAnswers();
 
 function setup() {
   createCanvas(800, 800);
 
-  clearScreen();
+  // Tegner alle de elementer der bruges i GUI'en
+  spawnUI();
 }
 
 function draw() {
-  
-  button.mousePressed(clearScreen);
-  button2.mousePressed(generateAnswer);
-
+  // Registrerer når der trykkes på knapperne i GUI'en
+  clearButton.mousePressed(clearScreen);
+  submitButton.mousePressed(generateAnswer);
 }
 
 
+/*
 
+  Afsnit med alle funktioner der bruges i scriptet
+
+*/
+
+
+// Generer et svar fra input feltet
 function generateAnswer() {
   let inputValue = input.value();
-  clearInput();
+  input.value(" ");
 
   printAnswerHandler(inputValue, "User");
-  printAnswerHandler(answerFinder(inputValue), "AI");
+  printAnswerHandler(answerExtractor(inputValue), "AI");
 }
 
+// Udpiller svaret fra listen ved at sammenligne den givne string med dem fra den kendte liste
+function answerExtractor(rawInput) {
 
-function answerFinder(a) {
-  let keyWord = "";
+  // Finder index'et for det element i de kendte lister der passer med den givne spørgsmåls string
   let keyWordIndex;
-
   for (let i = 0; i < wordToFind.length; i++) {
     
-    if (textInText(wordToFind[i], a)){
+    if (textInText(wordToFind[i], rawInput)){
       console.log("true: " + i);
       keyWord = wordToFind[i];
       keyWordIndex = i;
@@ -39,83 +47,71 @@ function answerFinder(a) {
     }
   }
 
-
-
-
   if (keyWordIndex == undefined) {
   return "Jeg kunne desværre ikke svare på dit spørgsmål, bedre held næste gang :3";
   }
 
+  return stringMerger(rawInput, keyWordIndex);
+}
 
+// Sammensætter to strings ved at kende indexet på svar og spørgsmåls string ved brug af lister
+function stringMerger(_rawInput, _keyWordIndex){
 
-  wordsInQuestion = a.split(" ");
-  keyWordList = keyWord.split(" ");
+  // Tager spørgsmål stillet og de forud kreeret svar og sammensætter for at få et unikt svar
+  wordsInQuestion = _rawInput.split(" ");
+  keyWordList = wordToFind[_keyWordIndex].split(" ");
 
-
+  // Finder det sidste led der indeholder noget af spørsgmålet så det kan fjernes
   let indexForKey;
-
   for (let i = 0; i < wordsInQuestion.length; i++) {
-    console.log(keyWordList[keyWordList.length - 1].toLowerCase());
-    console.log(wordsInQuestion[i].toLowerCase());
 
+    // Tjekker om den sidste placering i den predefinerede liste er den sammen som nuværende element i den variable liste
     if (wordsInQuestion[i].toLowerCase() == keyWordList[keyWordList.length - 1].toLowerCase()){
       indexForKey = (i + 1);
       break;
     }
-}
-
-
-
-
-
-  if (indexForKey == undefined){
-  return "Der er opstået en fejl :'(";
   }
 
+  if (indexForKey == undefined){ return "Der er opstået en fejl :'("; }
 
-
+  // Sammensætter listerne og starter forloop'et ved det sidste vigtige element i listen
   let toStringList = [];
-
   for (let i = indexForKey; i < wordsInQuestion.length; i++){
   toStringList.push(wordsInQuestion[i]);
   }
 
-
-  console.log(toStringList)
-  return (wordsToAnswer[keyWordIndex] + toStringList.join(" ") + "?");
+  // Retunerer det predefinerede svar med listen sammensat til string
+  return (wordsToAnswer[_keyWordIndex] + toStringList.join(" "));
 }
 
-
 // Tjekker om en string indeholder en anden string
-function textInText(a = "h", b = "hej") {
+function textInText(a, b) {
   console.log("Tjekker string")
   a = a.toLowerCase();
   b = b.toLowerCase();
 
   for (let i = 0; i < a.length; i++){
     for (let l = 0; l < b.length; l++){
-      if (a[i] != b[l]){
-        continue;
-      }
 
-      if (a == b.substring(l, l + a.length)) {
-        console.log(b.substring(l, l + a.length));
-        return true;
-      }
+      if (a[i] != b[l]){ continue; }
+
+      if (a == b.substring(l, l + a.length)) { return true; }
+
     }
-    return false;
+  }
+  return false;
 }
-}
 
-
-
+// Sammensætter tidligere svar med nye og navngiver afsenderen
 function printAnswerHandler(toPrint = "Error", writer = "User") {
-  if (toPrint === "Error") { answerDisplay.value(toPrint); return; }
+
+  // Retunere funktionen hvis der ikke er noget ordentligt input
+  if (toPrint === "Error") { answerDisplay.html(toPrint); return; }
 
   let preExisting = answerDisplay.html();
-
   let newChat = "";
 
+  // Indsætter det nye svar i string med afsender skrevet på
   if (writer == "User"){ newChat = "<i>"; } else { newChat; }
   newChat += ("<b>" + writer + "</b>" + "<br>" + toPrint + "<br>" + "<br>");
   if (writer == "User"){ newChat += "</i>"; }
@@ -125,32 +121,32 @@ function printAnswerHandler(toPrint = "Error", writer = "User") {
   answerDisplay.html(newChat);
 }
 
-
-function clearInput(){
-  input = createInput();
-  input.size(400, 20);
-  input.position(width/2 - 280, height/2 - 300);
+// Rydder kun inputtet af GUI'en
+function clearScreen(){
+  
+  input.value(" ");
+  answerDisplay.html(" ");
 }
 
 // Funktion der rydder skærmen og kan gemme noget text til input, hvis det ønskes
-function clearScreen() {
-  //background(200);
+function spawnUI() {
 
   // Opretter input til UI
   input = createInput();
   input.size(400, 20);
   input.position(width/2 - 280, height/2 - 300);
 
-  // Generer to knapper til input
-  fill(255, 0, 0);
-  button = createButton('Clear');
-  button.style('color: white; background-color: rgb(29,114,86);');
-  button.position(input.x + input.width, height/2 - 300);
+  // Generer knap til at rydde skærm
+  clearButton = createButton('Clear');
+  clearButton.style('color: white; background-color: rgb(29,114,86);');
+  clearButton.position(input.x + input.width, height/2 - 300);
 
-  button2 = createButton('Send sprøgsmål');
-  button2.style('color: rgb(29,114,86); background-color: white;');
-  button2.position(input.x + button.width + input.width, height/2 - 300);
+  // Generer knap til at indsende spørgsmål
+  submitButton = createButton('Send sprøgsmål');
+  submitButton.style('color: rgb(29,114,86); background-color: white;');
+  submitButton.position(input.x + clearButton.width + input.width, height/2 - 300);
 
+  // Opretter område til at fremvise tekst
   answerDisplay = createP();
   answerDisplay.style('color: rgb(29,114,86); background-color: white;');
   answerDisplay.size(width - 100, 1000);

@@ -19,12 +19,8 @@ canvas {
 }
 
 .hero {
-  margin-left: 25%;
-}
-
-.hero2 {
-  width: auto;
-  height: auto;
+  width: 800px;
+  margin-inline: auto;
 }
 
 .intergratedChatBot{

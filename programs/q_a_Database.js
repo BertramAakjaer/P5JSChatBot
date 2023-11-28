@@ -1,3 +1,4 @@
+// Retunerer liste over mulige spørgsmål
 function getQuestions(){
     var wordToFind = [
         "Kan du",
@@ -12,6 +13,8 @@ function getQuestions(){
 
       return wordToFind;
 }
+
+// Retunerer liste over mulige svar til spørgsmål
 function getAnswers(){
     var wordsToAnswer = [
       "Selvfølgelig kan jeg ",
