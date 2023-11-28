@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+canvas {
+  display: block;
+}
+
+.main {
+  width: 100%;
+  height: 2000px;
+  background-image: linear-gradient(to bottom right, rgb(26, 121, 121), rgb(35, 100, 10));
+}
+
+.hero {
+  margin-left: 25%;
+}
+
+.hero2 {
+  width: auto;
+  height: auto;
+}
+
+.intergratedChatBot{
+  width: 800px;
+  height: 800px;
+}
