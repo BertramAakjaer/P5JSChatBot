@@ -8,7 +8,11 @@ function getQuestions(){
         "Hvad",
         "Jeg kan",
         "Mit navn er",
-        "Nicolaj"
+        "Nicolaj",
+        "Er du",
+        "Hej",
+        "Vil du",
+        "Hvem er"
       ];
 
       return wordToFind;
@@ -18,13 +22,17 @@ function getQuestions(){
 function getAnswers(){
     var wordsToAnswer = [
       "Selvfølgelig kan jeg ",
-      "Du er den beste, selvfølgelig kan du ",
+      "Du er den bedste, selvfølgelig kan du ",
       "Hvad mener du med at jeg er ",
       "Hvorfor mener du at du er ",
       "Jeg ved ikke hvad ",
       "Hvorfor kan du ",
       "Hej ",
-      "This is a easter egg!"
+      "This is a easter egg!",
+      "Jeg ved ikke om jeg er ",
+      "Halløjsa lille ven!!",
+      "Jeg vil med glæde ",
+      "Du kender selv "
     ];
     
     return wordsToAnswer;

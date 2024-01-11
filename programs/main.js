@@ -29,7 +29,7 @@ function generateAnswer() {
   input.value(" ");
 
   printAnswerHandler(inputValue, "User");
-  printAnswerHandler(answerExtractor(inputValue), "AI");
+  printAnswerHandler(answerExtractor(inputValue), "ChatBot");
 }
 
 // Udpiller svaret fra listen ved at sammenligne den givne string med dem fra den kendte liste
